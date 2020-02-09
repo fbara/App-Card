@@ -12,21 +12,25 @@ struct ContentView: View {
     @State private var isFullScreen = false
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            if !isFullScreen {
-                CardView()
+        NavigationView {
+            ScrollView(.vertical, showsIndicators: true) {
+                if !isFullScreen {
+                    CardView()
+                }
+                
+                ListCardView(isFullScreen: $isFullScreen)
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            self.isFullScreen.toggle()
+                        }
+                }
+                
+                if !isFullScreen {
+                    CardView()
+                }
             }
-            
-            ListCardView(isFullScreen: $isFullScreen)
-                .onTapGesture {
-                    withAnimation(.spring()) {
-                        self.isFullScreen.toggle()
-                    }
-            }
-            
-            if !isFullScreen {
-                CardView()
-            }
+            .navigationBarTitle("Swift UI Cards!")
+            .navigationBarHidden(isFullScreen ? true : false)
         }
     }
 }
@@ -97,15 +101,13 @@ struct CellView: View {
             
             Spacer()
             VStack {
-                Button(action: {
-                    //
-                }) {
+                NavigationLink(destination: Text("Coming soon?")) {
                     Text("GET")
-                        .fontWeight(.heavy)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal)
-                        .background(Color(.systemGray4))
-                        .clipShape(Capsule())
+                    .fontWeight(.heavy)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .background(Color(.systemGray4))
+                    .clipShape(Capsule())
                 }
                 
                 Text("In-App Purchases")
